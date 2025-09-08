@@ -10,7 +10,6 @@
  * pointed to by src to the memory area pointed to by dest.
  *
  * Return: pointer to dest
- *
  */
 char *_memcpy(char *dest, char *src, unsigned int n)
 {
