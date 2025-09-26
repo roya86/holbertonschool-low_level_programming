@@ -2,6 +2,13 @@
 #include <stdlib.h>
 #include "3-calc.h"
 
+/**
+ * main - Perform a simple calculation based on CLI arguments
+ * @argc: Number of arguments
+ * @argv: Array of argument strings
+ *
+ * Return: 0 on success (exits with 98/99/100 on specific errors)
+ */
 int main(int argc, char *argv[])
 {
 	int a, b, result;

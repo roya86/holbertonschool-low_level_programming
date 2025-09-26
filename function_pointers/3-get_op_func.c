@@ -1,5 +1,11 @@
 #include "3-calc.h"
 
+/**
+ * get_op_func - Select the correct operation function
+ * @s: Operator string passed by the user
+ *
+ * Return: Pointer to the matching function, or NULL if not found
+ */
 int (*get_op_func(char *s))(int, int)
 {
 	op_t ops[] = {
@@ -20,3 +26,4 @@ int (*get_op_func(char *s))(int, int)
 
 	return (ops[i].f);
 }
+
