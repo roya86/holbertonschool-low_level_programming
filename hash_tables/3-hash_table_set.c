@@ -3,6 +3,24 @@
 #include <stdlib.h>
 
 /**
+ * update_existing_key - updates the value of an existing key
+ * @node: pointer to the node
+ * @value_dup: new value to assign
+ * @key_dup: duplicated key to free
+ * @new_node: new node to free
+ * Return: 1
+ */
+int update_existing_key(hash_node_t *node, char *value_dup,
+			char *key_dup, hash_node_t *new_node)
+{
+	free(node->value);
+	node->value = value_dup;
+	free(key_dup);
+	free(new_node);
+	return (1);
+}
+
+/**
  * hash_table_set - A function that sets a key value pair in the hash table.
  * @ht: A pointer to hash table to set in.
  * @key: The key to set in hash table.
@@ -15,9 +33,7 @@ int hash_table_set(hash_table_t *ht, const char *key, const char *value)
 	char *value_dup = NULL, *key_dup = NULL;
 	hash_node_t *new_node = NULL, *tmp_node = NULL;
 
-	if (!ht || !key || !value)
-		return (0);
-	else if (strlen(key) == 0)
+	if (!ht || !key || !value || strlen(key) == 0)
 		return (0);
 
 	value_dup = strdup(value);
@@ -32,30 +48,17 @@ int hash_table_set(hash_table_t *ht, const char *key, const char *value)
 	new_node->next = NULL;
 
 	index = key_index((unsigned char *)key, ht->size);
+	tmp_node = ht->array[index];
 
-	if ((ht->array)[index] != NULL)
+	while (tmp_node)
 	{
-		tmp_node = (ht->array)[index];
-		while (tmp_node)
-		{
-			if (strcmp(tmp_node->key, key_dup) == 0)
-			{
-				free(ht->array[index]->value);
-				ht->array[index]->value = value_dup;
-				free(key_dup);
-				free(new_node);
-				return (1);
-			}
-			tmp_node = tmp_node->next;
-		}
-		tmp_node = (ht->array)[index];
-		new_node->next = tmp_node;
-		(ht->array)[index] = new_node;
+		if (strcmp(tmp_node->key, key_dup) == 0)
+			return (update_existing_key(tmp_node, value_dup, key_dup, new_node));
+		tmp_node = tmp_node->next;
 	}
-	else
-	{
-		(ht->array)[index] = new_node;
-	}
+
+	new_node->next = ht->array[index];
+	ht->array[index] = new_node;
 
 	return (1);
 }
